@@ -1,0 +1,33 @@
+.button {
+  padding: 5px 24px;
+  height: 5vh;
+  border-radius: 5px;
+  border: transparent;
+  font-weight: 600;
+  font-size: 24px;
+  color: #282c34;
+}
+
+.disabled {
+  width: 133px;
+  background: #0dd7fa;
+  opacity: 0.5;
+  color: #04515e;
+}
+
+.default {
+  width: 132px;
+  background: #0dd7fa;
+}
+
+.default:hover {
+  background: #0ba7c2;
+}
+
+.default:active {
+  background: #02a1bd;
+}
+
+.button:disabled {
+  opacity: .5;
+}

@@ -1,0 +1,16 @@
+.display {
+  border: 1px solid #0dd7fa;
+  border-radius: 10px;
+  background-color: #0dd7fa;
+  margin: 0 0 20px 0;
+}
+
+.default {
+  font-size: 72px;
+  font-weight: bold;
+  padding: 25px 0;
+}
+
+.red {
+  color: red;
+}
