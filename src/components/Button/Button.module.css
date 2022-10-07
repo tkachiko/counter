@@ -6,6 +6,7 @@
   font-weight: 600;
   font-size: 24px;
   color: #282c34;
+  cursor: pointer;
 }
 
 .disabled {
@@ -13,6 +14,7 @@
   background: #0dd7fa;
   opacity: 0.5;
   color: #04515e;
+  cursor: not-allowed;
 }
 
 .default {

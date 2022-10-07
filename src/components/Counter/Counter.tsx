@@ -16,8 +16,8 @@ export const Counter = (props: CounterPropType) => {
     <div className={s.counter}>
       <Display count={props.count} maxCount={props.maxCount}/>
       <div className={s.buttons}>
-        <Button name={'inc'} disabled={props.count === 5} callBack={() => props.increment()}/>
-        <Button name={'reset'} disabled={props.count === 0} callBack={() => props.reset()}/>
+        <Button name={'inc'} disabled={props.count === 5} callBack={props.increment}/>
+        <Button name={'reset'} disabled={props.count === 0} callBack={props.reset}/>
       </div>
     </div>
   );
