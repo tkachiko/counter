@@ -11,9 +11,9 @@
 
 .disabled {
   width: 133px;
-  background: #0dd7fa;
+  background: #035f70;
   opacity: 0.5;
-  color: #04515e;
+  color: #02373f;
   cursor: not-allowed;
 }
 
@@ -23,11 +23,11 @@
 }
 
 .default:hover {
-  background: #0ba7c2;
+  background: #24adc4;
 }
 
 .default:active {
-  background: #02a1bd;
+  background: #298494;
 }
 
 .button:disabled {

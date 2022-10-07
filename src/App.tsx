@@ -3,17 +3,19 @@ import './App.css';
 import {Counter} from './components/Counter/Counter';
 
 function App() {
-  const [count, setCount] = useState<number>(0);
-  const maxCount = 5;
+  const MAX_VALUE = 5;
+  const START_VALUE = 0;
+  const STEP = 1;
+  const [count, setCount] = useState<number>(START_VALUE);
 
   const increment = () => {
-    if (count === maxCount) {
+    if (count === MAX_VALUE) {
       return;
     }
-    setCount(count + 1);
+    setCount(count + STEP);
   };
   const reset = () => {
-    setCount(0);
+    setCount(START_VALUE);
   };
 
   return (
@@ -21,7 +23,8 @@ function App() {
       <Counter increment={increment}
                count={count}
                reset={reset}
-               maxCount={maxCount}
+               maxValue={MAX_VALUE}
+               startValue={START_VALUE}
       />
     </div>
   );

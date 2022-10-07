@@ -1,21 +1,23 @@
 import React from 'react';
 import s from './Display.module.css';
 
-type DisplayPropType = {
-  maxCount: number
+export type DisplayPropType = {
+  maxValue: number
   count: number
 }
 
 export const Display = (props: DisplayPropType) => {
+  const {count, maxValue} = props;
+
   const finalClassName = s.default
-    + ' ' + (props.count === props.maxCount
+    + ' ' + (count === maxValue
       ? s.red
       : s.default);
 
   return (
     <div className={s.display}>
       <div className={finalClassName}>
-        {props.count}
+        {count}
       </div>
     </div>
   );
