@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Counter} from './components/Counter/Counter';
 
@@ -8,6 +8,20 @@ function App() {
   const STEP = 1;
   const [count, setCount] = useState<number>(START_VALUE);
 
+  useEffect(() => {
+    const storedValue = localStorage.getItem('counterValue');
+    if (storedValue) {
+      const newCountValue = JSON.parse(storedValue);
+      setCount(newCountValue);
+    }
+  }, []);
+  useEffect(() => {
+    if (count) {
+      localStorage.setItem('counterValue', JSON.stringify(count));
+    }
+  }, [count]);
+
+
   const increment = () => {
     if (count === MAX_VALUE) {
       return;
@@ -16,6 +30,7 @@ function App() {
   };
   const reset = () => {
     setCount(START_VALUE);
+    localStorage.clear()
   };
 
   return (
