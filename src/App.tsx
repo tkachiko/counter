@@ -3,16 +3,23 @@ import './App.css';
 import {Counter} from './components/Counter/Counter';
 
 function App() {
-  const MAX_VALUE = 5;
-  const START_VALUE = 0;
   const STEP = 1;
-  const [count, setCount] = useState<number>(START_VALUE);
+  const [count, setCount] = useState<number>(0);
+  const [maxValue, setMaxValue] = useState<number>(0);
+  const [startValue, setStartValue] = useState<number>(0);
 
   useEffect(() => {
     const storedValue = localStorage.getItem('counterValue');
+    const storedStartValue = localStorage.getItem(('startValue'));
+    const storedMaxValue = localStorage.getItem(('maxValue'));
     if (storedValue) {
-      const newCountValue = JSON.parse(storedValue);
-      setCount(newCountValue);
+      setCount(JSON.parse(storedValue));
+      if (storedStartValue) {
+        setStartValue(JSON.parse(storedStartValue));
+      }
+      if (storedMaxValue) {
+        setMaxValue(JSON.parse(storedMaxValue));
+      }
     }
   }, []);
   useEffect(() => {
@@ -23,14 +30,26 @@ function App() {
 
 
   const increment = () => {
-    if (count === MAX_VALUE) {
+    if (count === maxValue) {
       return;
     }
     setCount(count + STEP);
   };
   const reset = () => {
-    setCount(START_VALUE);
-    localStorage.clear()
+    setCount(startValue);
+  };
+  const setValues = (start: number, max: number) => {
+    localStorage.setItem('startValue', JSON.stringify(start));
+    localStorage.setItem('maxValue', JSON.stringify(max));
+    setStartValue(start);
+    setMaxValue(max);
+  };
+
+  const setStart = (value: number) => {
+    setStartValue(value);
+  };
+  const setMax = (value: number) => {
+    setMaxValue(value);
   };
 
   return (
@@ -38,8 +57,11 @@ function App() {
       <Counter increment={increment}
                count={count}
                reset={reset}
-               maxValue={MAX_VALUE}
-               startValue={START_VALUE}
+               maxValue={maxValue}
+               startValue={startValue}
+               setValues={setValues}
+               setStart={setStart}
+               setMax={setMax}
       />
     </div>
   );
