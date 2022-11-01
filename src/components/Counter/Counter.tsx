@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from 'react';
-import {Button} from '../Button/Button';
+import React from 'react';
 import {Display} from './Display/Display';
 import s from './Counter.module.css';
+import {Settings} from './Settings/Settings';
 
 export type CounterPropType = {
   increment: () => void
@@ -17,47 +17,23 @@ export type CounterPropType = {
 export const Counter = (props: CounterPropType) => {
   const {count, maxValue, startValue, increment, reset, setValues, setStart, setMax} = props;
 
-  const isIncButtonDisabled = count === maxValue || startValue > maxValue;
-  // const isResetButtonDisabled = count === startValue || startValue > maxValue;
-  const isSetButtonDisabled = startValue === maxValue || startValue > maxValue;
-
-  const incBtn = <span>inc</span>;
-  const resBtn = <span>reset</span>;
-  const setBtn = <span>set</span>;
-
-  const set = () => {
-    if (startValue < maxValue) {
-      setValues(startValue, maxValue);
-    } else {
-       /*
-       *  TODO:  - display error message
-       *         - block inputs
-       */
-      return console.log('ERROR!')
-    }
-  };
-
-  const setStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setStart(JSON.parse(e.currentTarget.value));
-  };
-  const setMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setMax(JSON.parse(e.currentTarget.value));
-  };
-
   return (
     <div className={s.counter}>
-      <Display count={count} maxValue={maxValue}/>
+      <Settings maxValue={maxValue}
+                startValue={startValue}
+                setMax={setMax}
+                setStart={setStart}
+                setValues={setValues}
+      />
       {/*
       * TODO: add layout and styles
       */}
-      <input onChange={setStartValue} type="number"/>
-      <input onChange={setMaxValue} type="number"/>
-
-      <div className={s.buttons}>
-        <Button disabled={isIncButtonDisabled} callBack={increment}>{incBtn}</Button>
-        <Button disabled={false} callBack={reset}>{resBtn}</Button>
-        <Button disabled={isSetButtonDisabled} callBack={set}>{setBtn}</Button>
-      </div>
+      <Display count={count}
+               maxValue={maxValue}
+               reset={reset}
+               increment={increment}
+               startValue={startValue}
+      />
     </div>
   );
 };
