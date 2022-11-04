@@ -4,35 +4,50 @@ import s from './Counter.module.css';
 import {Settings} from './Settings/Settings';
 
 export type CounterPropType = {
-  increment: () => void
   count: number
-  reset: () => void
-  maxValue: number
   startValue: number
-  setValues: (start: number, max: number) => void
-  setStart: (value: number) => void
-  setMax: (value: number) => void
+  maxValue: number
+  error: boolean
+  isSet: boolean
+  increment: () => void
+  reset: () => void
+  setStartValueCallback: (value: number) => void
+  setMaxValueCallback: (value: number) => void
+  setValuesCallback: () => void
 }
 
-export const Counter = (props: CounterPropType) => {
-  const {count, maxValue, startValue, increment, reset, setValues, setStart, setMax} = props;
+export const Counter: React.FC<CounterPropType> = ({
+                                                     count,
+                                                     startValue,
+                                                     maxValue,
+                                                     error,
+                                                     isSet,
+                                                     increment,
+                                                     reset,
+                                                     setStartValueCallback,
+                                                     setMaxValueCallback,
+                                                     setValuesCallback,
+                                                   }) => {
 
   return (
     <div className={s.counter}>
-      <Settings maxValue={maxValue}
-                startValue={startValue}
-                setMax={setMax}
-                setStart={setStart}
-                setValues={setValues}
+      <Settings
+        startValue={startValue}
+        maxValue={maxValue}
+        error={error}
+        isSet={isSet}
+        setStartValueCallback={setStartValueCallback}
+        setMaxValueCallback={setMaxValueCallback}
+        setValuesCallback={setValuesCallback}
       />
-      {/*
-      * TODO: add layout and styles
-      */}
-      <Display count={count}
-               maxValue={maxValue}
-               reset={reset}
-               increment={increment}
-               startValue={startValue}
+      <Display
+        count={count}
+        startValue={startValue}
+        maxValue={maxValue}
+        error={error}
+        isSet={isSet}
+        increment={increment}
+        reset={reset}
       />
     </div>
   );
