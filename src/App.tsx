@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Counter} from './components/Counter/Counter';
 
+const STEP = 1;
+
 function App() {
-  const STEP = 1;
   const [count, setCount] = useState<number>(0);
-  const [maxValue, setMaxValue] = useState<number>(0);
   const [startValue, setStartValue] = useState<number>(0);
+  const [maxValue, setMaxValue] = useState<number>(5);
+  const [error, setError] = useState<boolean>(false);
+  const [isSet, setIsSet] = useState<boolean>(true);
 
   useEffect(() => {
     const storedValue = localStorage.getItem('counterValue');
@@ -22,46 +25,57 @@ function App() {
       }
     }
   }, []);
+
   useEffect(() => {
     if (count) {
       localStorage.setItem('counterValue', JSON.stringify(count));
     }
   }, [count]);
 
-
   const increment = () => {
-    if (count === maxValue) {
+    if (startValue === maxValue) {
       return;
     }
     setCount(count + STEP);
   };
+
   const reset = () => {
     setCount(startValue);
-  };
-  const setValues = (start: number, max: number) => {
-    localStorage.setItem('startValue', JSON.stringify(start));
-    localStorage.setItem('maxValue', JSON.stringify(max));
-    setStartValue(start);
-    setMaxValue(max);
+    setIsSet(true);
   };
 
-  const setStart = (value: number) => {
-    setStartValue(value);
-  };
-  const setMax = (value: number) => {
+  const setMaxValueCallback = (value: number) => {
     setMaxValue(value);
+    setError(value <= startValue);
+    setIsSet(true);
+  };
+
+  const setStartValueCallback = (value: number) => {
+    setStartValue(value);
+    setError(value < 0 || value >= maxValue);
+    setIsSet(true);
+  };
+
+  const setValuesCallback = () => {
+    localStorage.setItem('startValue', JSON.stringify(startValue));
+    localStorage.setItem('maxValue', JSON.stringify(maxValue));
+    setCount(startValue);
+    setIsSet(false);
   };
 
   return (
     <div className="App">
-      <Counter increment={increment}
-               count={count}
-               reset={reset}
-               maxValue={maxValue}
-               startValue={startValue}
-               setValues={setValues}
-               setStart={setStart}
-               setMax={setMax}
+      <Counter
+        count={count}
+        startValue={startValue}
+        maxValue={maxValue}
+        error={error}
+        isSet={isSet}
+        increment={increment}
+        reset={reset}
+        setStartValueCallback={setStartValueCallback}
+        setMaxValueCallback={setMaxValueCallback}
+        setValuesCallback={setValuesCallback}
       />
     </div>
   );
