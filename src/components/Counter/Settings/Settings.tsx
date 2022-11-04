@@ -3,53 +3,57 @@ import s from './Settings.module.css';
 import {Button} from '../../Button/Button';
 
 export type SettingsPropType = {
-  maxValue: number
   startValue: number
-  setStart: (value: number) => void
-  setMax: (value: number) => void
-  setValues: (start: number, max: number) => void
+  maxValue: number
+  error: boolean
+  isSet: boolean
+  setStartValueCallback: (value: number) => void
+  setMaxValueCallback: (value: number) => void
+  setValuesCallback: () => void
 }
 
-export const Settings = (props: SettingsPropType) => {
-  const {startValue, maxValue, setStart, setMax, setValues} = props;
+export const Settings: React.FC<SettingsPropType> = ({
+                                                       startValue,
+                                                       maxValue,
+                                                       error,
+                                                       isSet,
+                                                       setStartValueCallback,
+                                                       setMaxValueCallback,
+                                                       setValuesCallback,
+                                                     }) => {
+  const setBtn = <span>set</span>;
 
   const finalClassName = s.default
-    + ' ' + (startValue === maxValue || startValue > maxValue || startValue < 0
+    + ' ' + (error
       ? s.red
       : s.default);
 
-  const setBtn = <span>set</span>;
-
-  const isSetButtonDisabled = startValue === maxValue || startValue > maxValue || startValue < 0;
-
-  const set = () => {
-    if (startValue < maxValue) {
-      setValues(startValue, maxValue);
-    }
-    console.log('values set!');
+  const setMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setMaxValueCallback(+e.currentTarget.value);
   };
 
-  const setStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setStart(JSON.parse(e.currentTarget.value));
+  const setStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setStartValueCallback(+e.currentTarget.value);
   };
-  const setMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setMax(JSON.parse(e.currentTarget.value));
+
+  const setValuesHandler = () => {
+    setValuesCallback();
   };
 
   return (
     <div className={s.settings}>
-      <div className={finalClassName}>
+      <div className={s.default}>
         <div className={s.value}>
           <span>max value:</span>
-          <input onChange={setMaxValue} type="number" value={maxValue}/>
+          <input className={finalClassName} onChange={setMaxValueHandler} type="number" value={maxValue}/>
         </div>
         <div className={s.value}>
           <span>start value:</span>
-          <input onChange={setStartValue} type="number" value={startValue}/>
+          <input className={finalClassName} onChange={setStartValueHandler} type="number" value={startValue}/>
         </div>
       </div>
       <div className={s.buttons}>
-        <Button disabled={isSetButtonDisabled} callBack={set}>{setBtn}</Button>
+        <Button disabled={!isSet || error} callBack={setValuesHandler}>{setBtn}</Button>
       </div>
     </div>
   );
