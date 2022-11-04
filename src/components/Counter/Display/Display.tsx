@@ -3,38 +3,63 @@ import s from './Display.module.css';
 import {Button} from '../../Button/Button';
 
 export type DisplayPropType = {
-  maxValue: number
   count: number
   startValue: number
-  reset: () => void
+  maxValue: number
+  error: boolean
+  isSet: boolean
   increment: () => void
+  reset: () => void
 }
 
-export const Display = (props: DisplayPropType) => {
-  const {count, maxValue, startValue, reset, increment} = props;
+export const Display: React.FC<DisplayPropType> = ({
+                                                     count,
+                                                     startValue,
+                                                     maxValue,
+                                                     error,
+                                                     isSet,
+                                                     increment,
+                                                     reset,
+                                                   }) => {
 
-  const isIncButtonDisabled = count === maxValue
-    // || startValue >= maxValue;
+  const isIncButtonDisabled = count === maxValue || isSet;
+  const isResButtonDisabled = count <= startValue;
 
-  // const isResetButtonDisabled = count === startValue || startValue > maxValue;
+  const isDifferentValues = (startValue !== 0 || maxValue !== 5) && isSet;
+  const isIncorrectValue = startValue === maxValue || error;
 
   const incBtn = <span>inc</span>;
   const resBtn = <span>reset</span>;
 
   const finalClassName = s.default
-    + ' ' + (isIncButtonDisabled
+    + ' ' + (isIncorrectValue
       ? s.red
       : s.default);
 
+  const counterClassName = s.default
+    + ' ' + (count === maxValue
+      ? s.red
+      : s.default);
+
+  const incrementHandler = () => {
+    increment();
+  };
+  const resetHandler = () => {
+    reset();
+  };
+
   return (
     <div className={s.display}>
-      <div className={finalClassName}>
-        {count}
-      </div>
-
+      {
+        isIncorrectValue
+          ? <div className={`${finalClassName} ${s.message}`}>Incorrect value</div>
+          : isDifferentValues || startValue === 0
+            ? <div className={`${finalClassName} ${s.message}`}>Enter values and press 'set'</div>
+            : <div className={counterClassName}>{count}</div>
+      }
       <div className={s.buttons}>
-        <Button disabled={isIncButtonDisabled} callBack={increment}>{incBtn}</Button>
-        <Button disabled={false} callBack={reset}>{resBtn}</Button>
+        <Button disabled={error ? error : isIncButtonDisabled} callBack={incrementHandler}>{incBtn}</Button>
+        <Button disabled={error ? isResButtonDisabled : isResButtonDisabled} callBack={resetHandler}>{resBtn}</Button>
       </div>
     </div>
   );
