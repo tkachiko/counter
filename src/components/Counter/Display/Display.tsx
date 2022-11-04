@@ -23,7 +23,6 @@ export const Display: React.FC<DisplayPropType> = ({
                                                    }) => {
 
   const isIncButtonDisabled = count === maxValue || isSet;
-  const isResButtonDisabled = count <= startValue;
 
   const isDifferentValues = (startValue !== 0 || maxValue !== 5) && isSet;
   const isIncorrectValue = startValue === maxValue || error;
@@ -53,13 +52,13 @@ export const Display: React.FC<DisplayPropType> = ({
       {
         isIncorrectValue
           ? <div className={`${finalClassName} ${s.message}`}>Incorrect value</div>
-          : isDifferentValues || startValue === 0
+          : isDifferentValues
             ? <div className={`${finalClassName} ${s.message}`}>Enter values and press 'set'</div>
             : <div className={counterClassName}>{count}</div>
       }
       <div className={s.buttons}>
         <Button disabled={error ? error : isIncButtonDisabled} callBack={incrementHandler}>{incBtn}</Button>
-        <Button disabled={error ? isResButtonDisabled : isResButtonDisabled} callBack={resetHandler}>{resBtn}</Button>
+        <Button disabled={false} callBack={resetHandler}>{resBtn}</Button>
       </div>
     </div>
   );

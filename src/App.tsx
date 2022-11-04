@@ -41,7 +41,6 @@ function App() {
 
   const reset = () => {
     setCount(startValue);
-    setIsSet(true);
   };
 
   const setMaxValueCallback = (value: number) => {
